@@ -218,6 +218,9 @@ fun StyleCard(index: Int, name: String, selected: Boolean, colorMode: Int, versi
                     FontStore.typeface(ctx, Prefs.fontId(ctx, index), Prefs.fontWeight(ctx, index)),
                     Prefs.fontWidth(ctx, index) / 100f
                 )
+                painter.fillOpacity = Prefs.fillOpacity(ctx, index) / 100f
+                painter.outlineOpacity = Prefs.outlineOpacity(ctx, index) / 100f
+                painter.outlineWidthDp = Prefs.outlineWidth(ctx, index) / 10f
                 painter.setTime(Calendar.getInstance(), DateFormat.is24HourFormat(ctx))
                 painter.tick = 1f
                 n.save()
@@ -256,6 +259,11 @@ fun FontCard(style: Int, fontVersion: Int, onImport: () -> Unit) {
             }
             PrefSlider("Weight", weight, 100, 900, { "$it" }) { weight = it; Prefs.setFontWeight(ctx, style, it) }
             PrefSlider("Width", Prefs.fontWidth(ctx, style), 40, 130, { "$it%" }) { Prefs.setFontWidth(ctx, style, it) }
+            if (style == ClockPainter.THIN || style == ClockPainter.BOLD) {
+                PrefSlider("Fill opacity", Prefs.fillOpacity(ctx, style), 0, 100, { "$it%" }) { Prefs.setFillOpacity(ctx, style, it) }
+                PrefSlider("Outline opacity", Prefs.outlineOpacity(ctx, style), 0, 100, { "$it%" }) { Prefs.setOutlineOpacity(ctx, style, it) }
+                PrefSlider("Outline width", Prefs.outlineWidth(ctx, style), 10, 80, { "%.1f dp".format(it / 10f) }) { Prefs.setOutlineWidth(ctx, style, it) }
+            }
             Text(
                 "Weight works with variable fonts (e.g. Google Sans Flex, Roboto Flex).",
                 style = MaterialTheme.typography.bodySmall,

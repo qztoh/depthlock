@@ -64,6 +64,10 @@ class ClockPainter(private val ctx: Context) {
     var lockY = 0.42f
     var aodY = 0.22f
     var aodAlpha = 0.8f
+
+    var fillOpacity = 1f
+    var outlineOpacity = 0f
+    var outlineWidthDp = 1.6f
     var tick = 1f
 
     private var shiftX = 0f
@@ -210,6 +214,7 @@ class ClockPainter(private val ctx: Context) {
     }
 
     private fun advance(h: Float): Float { metrics(); return dw100 * (h / h100) * scaleX }
+    val ow = max(outlineWidthDp * density, 1f)
 
     // ---- style 0: Ethereal (single line, thin font) ----
     private fun drawThin(c: Canvas, H: Float, p: Float, cx: Float, cy: Float, color: Int, a: Float) {
@@ -229,9 +234,10 @@ class ClockPainter(private val ctx: Context) {
         val top = cy - h / 2f
         val xs = floatArrayOf(x0 + w / 2f, x1 + w / 2f, x2 + w / 2f, x3 + w / 2f)
         for (i in 0..3) {
-            anim(i, h) { d, al, yo -> drawStr(c, d.toString(), xs[i], top + yo, h, al, 0f, 0f, color, a) }
+            // app/src/main/java/com/example/depthlock/ClockPainter.kt (drawThin: replace lines 232 and 234)
+            anim(i, h) { d, al, yo -> drawStr(c, d.toString(), xs[i], top + yo, h, al * fillOpacity, al * outlineOpacity, ow, color, a) }
         }
-        drawStr(c, ":", xc + colonW / 2f, top, h, 1f, 0f, 0f, color, a)
+        drawStr(c, ":", xc + colonW / 2f, top, h, fillOpacity, outlineOpacity, ow, color, a)
     }
 
     // ---- style 1: Bubble (stacked, heavy font, outline on AOD) ----
@@ -242,7 +248,7 @@ class ClockPainter(private val ctx: Context) {
         val gap = h * 0.05f
         val rowGap = h * 0.16f
         val e = smooth(p)
-        val ow = max(1.6f * density, 1f)
+        val ow = max(outlineWidthDp * density, 1f)
         val top0 = cy - (2f * h + rowGap) / 2f
         val top1 = top0 + h + rowGap
         val half = (w + gap) / 2f
@@ -256,7 +262,7 @@ class ClockPainter(private val ctx: Context) {
         val tops = floatArrayOf(top0, top0, top1, top1)
         for (i in 0..3) {
             anim(i, h) { d, al, yo ->
-                drawStr(c, d.toString(), cxs[i], tops[i] + yo, h, e * al, (1f - e) * al, ow, color, a)
+                drawStr(c, d.toString(), cxs[i], tops[i] + yo, h, lerp(0f, fillOpacity, e) * al, lerp(1f, outlineOpacity, e) * al, ow, color, a)
             }
         }
     }

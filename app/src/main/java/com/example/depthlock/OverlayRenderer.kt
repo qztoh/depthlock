@@ -76,6 +76,9 @@ class OverlayRenderer(private val ctx: Context) {
             FontStore.typeface(c, Prefs.fontId(c, st), Prefs.fontWeight(c, st)),
             Prefs.fontWidth(c, st) / 100f
         )
+        clock.fillOpacity = Prefs.fillOpacity(c, st) / 100f
+        clock.outlineOpacity = Prefs.outlineOpacity(c, st) / 100f
+        clock.outlineWidthDp = Prefs.outlineWidth(c, st) / 10f
     }
 
     fun regionFrac() = regionFrac

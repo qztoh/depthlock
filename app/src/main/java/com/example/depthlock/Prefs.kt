@@ -68,7 +68,15 @@ object Prefs {
     fun setFontWeight(c: Context, style: Int, v: Int) = putInt(c, "fontW$style", v)
     fun fontWidth(c: Context, style: Int) = int(c, "fontX$style", defWidth[style.coerceIn(0, 3)])
     fun setFontWidth(c: Context, style: Int, v: Int) = putInt(c, "fontX$style", v)
-
+    private val defFill = intArrayOf(100, 20, 100, 100) //  percent, per style
+    private val defOutline = intArrayOf(0, 100, 0, 0) //  percent, per style
+    private val defOutlineW = intArrayOf(16, 25, 16, 16) //  tenths of dp, per style
+    fun fillOpacity(c: Context, style: Int) = int(c, "fillA$style", defFill[style.coerceIn(0, 3)])
+    fun setFillOpacity(c: Context, style: Int, v: Int) = putInt(c, "fillA$style", v)
+    fun outlineOpacity(c: Context, style: Int) = int(c, "outA$style", defOutline[style.coerceIn(0, 3)])
+    fun setOutlineOpacity(c: Context, style: Int, v: Int) = putInt(c, "outA$style", v)
+    fun outlineWidth(c: Context, style: Int) = int(c, "outW$style", defOutlineW[style.coerceIn(0, 3)])
+    fun setOutlineWidth(c: Context, style: Int, v: Int) = putInt(c, "outW$style", v)
     // ---------- regions that hide the stock clock (% of screen height) ----------
     fun coverTop(c: Context) = int(c, "coverTop", 20)
     fun setCoverTop(c: Context, v: Int) = putInt(c, "coverTop", v)
