@@ -433,7 +433,10 @@ class DepthOverlayService : AccessibilityService() {
                 acc.scroller = true
                 acc.rows = countRows(n, minRow, minWidth)
             }
-            if (id.contains("quick_settings") || id.startsWith("qs_") || id.contains("quick_qs")) {
+//            if (id.contains("quick_settings")
+//            || id.startsWith("qs_") || id.contains("quick_qs")) {
+            if ((id.contains("quick_settings") && id != "quick_settings_container")
+                || id.startsWith("qs_") || id.contains("quick_qs")) { // ADJUSTED HERE - bare container reports visible after wake on Android 17
                 acc.qsKnown = true
                 if (vis) acc.qsVisible = true
             }
